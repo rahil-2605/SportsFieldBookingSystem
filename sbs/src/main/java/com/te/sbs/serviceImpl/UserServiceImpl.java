@@ -3,6 +3,7 @@ package com.te.sbs.serviceImpl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.te.sbs.dto.SportsFieldDto;
 import com.te.sbs.dto.UserDto;
 import com.te.sbs.entity.SportsField;
 import com.te.sbs.entity.User;
+import com.te.sbs.exception.SomethingWentWrongException;
 import com.te.sbs.exception.UserNotFoundException;
 import com.te.sbs.repository.SportsFieldRepository;
 import com.te.sbs.repository.UserRepository;
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private SportsFieldRepository sportsFieldRepository;
 
+//	@Autowired
+//	private ModelMapper modelMapper;
+
 	@Override
 	public GetUserDto addUser(UserDto userRegistrationDto) {
 		User user = new User();
@@ -37,8 +42,16 @@ public class UserServiceImpl implements UserService {
 			userRepository.save(user);
 			return getUserDto;
 		} else {
-			return getUserDto;
+			throw new SomethingWentWrongException("Something Went Wrong") ;
 		}
+
+//		if (userRegistrationDto != null) {
+//			return modelMapper.map(userRepository.save(modelMapper.map(userRegistrationDto, User.class)),
+//					GetUserDto.class);
+//		} else {
+//			throw new SomethingWentWrongException("Something Went Wrong") ;
+//		}
+
 	}
 
 	@Override

@@ -43,6 +43,9 @@ public class BookingServiceImpl implements BookingService {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public Object booking(BookingDto bookingDto) {
@@ -138,7 +141,9 @@ public class BookingServiceImpl implements BookingService {
 		BookingStatus currentBookingStatus=bookingStatusRepository.findById(bookingId).get();
 		BookingStatusDto bookingStatusDto=new BookingStatusDto();
 		BeanUtils.copyProperties(currentBookingStatus,bookingStatusDto );
+		Booking booking=bookingRepository.findById(bookingId).get();
 		
+		emailService.sendEmail(booking.getUser().getEmail(),"Booking Status",bookingStatusDto.getStatus());
 		
 		return bookingStatusDto;
 	}

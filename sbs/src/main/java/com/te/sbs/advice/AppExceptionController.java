@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.te.sbs.exception.SomethingWentWrongException;
 import com.te.sbs.exception.UserIdOrPasswordIncorrectException;
 import com.te.sbs.exception.UserNotFoundException;
 import com.te.sbs.response.AppResponse;
@@ -28,6 +29,17 @@ public class AppExceptionController {
 	
 	@ExceptionHandler(UserIdOrPasswordIncorrectException.class)
 	public ResponseEntity<AppResponse> userIdOrPasswordIncorrect(UserIdOrPasswordIncorrectException ex){
+		
+		appResponse.setStatus("401");
+		appResponse.setMessage(ex.getMessage());
+		appResponse.setData(null);
+		
+		return new ResponseEntity<AppResponse>(appResponse, HttpStatus.BAD_REQUEST);
+		
+	}
+	
+	@ExceptionHandler(SomethingWentWrongException.class)
+	public ResponseEntity<AppResponse> somethingWentWrong(SomethingWentWrongException ex){
 		
 		appResponse.setStatus("401");
 		appResponse.setMessage(ex.getMessage());
